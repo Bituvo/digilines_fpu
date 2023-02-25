@@ -10,15 +10,10 @@ function evaluate(expression)
             local result = loadstring("return " .. expression)
 
             if result then
-                successful, returned, _ = xpcall(result, error_function)
+                successful, result, _ = xpcall(result, error_function)
 
                 if successful then
-                    result = tostring(returned)
-                    if result:sub(-2) == ".0" then
-                        result = result:sub(1, -3)
-                    end
-
-                    return tonumber(result)
+                    return result
                 end
             end
         end
