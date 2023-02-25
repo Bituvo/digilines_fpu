@@ -3,19 +3,21 @@ function error_function(err)
 end
 
 function evaluate(expression)
-    if expression:match("^[-.\\+*^\\/()%d ]+$") then
-        local result = loadstring("return " .. expression)
-        
-        if result then
-            successful, returned, _ = xpcall(result, error_function)
-            
-            if successful then
-                result = tostring(returned)
-                if result:sub(-2) == ".0" then
-                    result = result:sub(1, -3)
+    if #expression < 128 then
+        if expression:match("^[-.\\+*^\\/()%d ]+$") then
+            local result = loadstring("return " .. expression)
+
+            if result then
+                successful, returned, _ = xpcall(result, error_function)
+
+                if successful then
+                    result = tostring(returned)
+                    if result:sub(-2) == ".0" then
+                        result = result:sub(1, -3)
+                    end
+
+                    return tonumber(result)
                 end
-                
-                return tonumber(result)
             end
         end
     end
