@@ -1,9 +1,11 @@
+loca max_expression_length = minetest.settings:get("digilines_fpu_max_expression_length") or 128
+
 function error_function(err)
     minetest.log("warning", err)
 end
 
 function evaluate(expression)
-    if #expression < 128 then
+    if #expression < max_expression_length then
         if expression:match("^[-.\\+*^\\/()%d ]+$") then
             local result = loadstring("return " .. expression)
 
