@@ -1,15 +1,22 @@
+function error_function(err)
+    minetest.log("warning", err)
+end
+
 function evaluate(expression)
     if expression:match("^[-.\\+*^\\/()%d ]+$") then
         local result = loadstring("return " .. expression)
         
         if result then
-            result = tostring(result())
-
-            if result:sub(-2) == ".0" then
-                result = result:sub(1, -3)
-            end
+            successful, returned, _ = xpcall(result, error_function)
             
-            return tonumber(result)
+            if successful then
+                result = tostring(returned)
+                if result:sub(-2) == ".0" then
+                    result = result:sub(1, -3)
+                end
+                
+                return tonumber(result)
+            end
         end
     end
 end
