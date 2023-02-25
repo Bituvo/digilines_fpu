@@ -1,4 +1,4 @@
-loca max_expression_length = minetest.settings:get("digilines_fpu_max_expression_length") or 128
+loca max_expression_length = tonumber(minetest.settings:get("digilines_fpu_max_expression_length")) or 128
 
 function error_function(err)
     minetest.log("warning", err)
